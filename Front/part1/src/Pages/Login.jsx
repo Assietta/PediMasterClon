@@ -10,7 +10,7 @@ export default function Login() {
   const { login, handleGoogleCredential } = useAuth();
   const nav = useNavigate();
   const loc = useLocation();
-  const redirectTo = loc.state?.from || "/admin/foods";
+  const redirectTo = loc.state?.from ?? null;
 
   const [mode, setMode] = useState("login"); // "login" | "register"
   const [form, setForm] = useState({ user: "", pass: "" });
@@ -34,7 +34,13 @@ export default function Login() {
       setSub(false);
 
       if (res?.ok) {
-        nav(redirectTo, { replace: true }); // 👉 redirige al panel
+        const target =
+          redirectTo ??
+          (res.user?.role === "Admin" || res.user?.role === "SuperAdmin"
+            ? "/admin/foods"
+            : "/app");
+
+        nav(target, { replace: true });
       } else {
         setErr(res?.message || "Error de autenticación");
       }
@@ -64,8 +70,13 @@ export default function Login() {
           const result = await handleGoogleCredential(cred);
 
           if (result?.ok) {
-            // 👉 si no tiró error, redirigimos
-            nav(redirectTo, { replace: true });
+            const target =
+              redirectTo ??
+              (result.user?.role === "Admin" || result.user?.role === "SuperAdmin"
+                ? "/admin/foods"
+                : "/app");
+
+            nav(target, { replace: true });
           } else {
             throw new Error(result?.message);
           }

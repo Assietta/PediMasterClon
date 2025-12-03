@@ -1,13 +1,20 @@
 .sidebar {
+  position: fixed;
+  top: 70px;          /* misma altura que el navbar */
+  bottom: 0;          /* llega hasta el fondo de la ventana */
+  left: 0;
   width: 260px;
+
   background: #1d1d1f;
   color: #fff;
   display: flex;
   flex-direction: column;
-  padding: 20px 16px;
-  margin-top: 50px;
+  padding: 20px 16px 24px; /* padding extra abajo */
   border-right: 1px solid #2b2b2d;
+
+  overflow-y: auto;   /* si algún día el contenido es muy largo, scrollea */
 }
+
 
 .brand {
   display: flex;

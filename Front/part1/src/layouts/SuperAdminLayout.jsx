@@ -7,18 +7,18 @@ const superAdminMenu = [
   {
     title: "Configuración de forms",
     items: [
-      { label: "Form Usuarios", to: "/admin/forms/users" },
-      { label: "Form Restaurantes", to: "/admin/forms/restaurants" },
-      { label: "Form Menús", to: "/admin/forms/menus" },
-      { label: "Form Tags", to: "/admin/forms/tags" },
+      { label: "Form Usuarios", to: "/superadmin/forms/users" },
+      { label: "Form Restaurantes", to: "/superadmin/forms/restaurants" },
+      { label: "Form Menús", to: "/superadmin/forms/menus" },
+      { label: "Form Tags", to: "/superadmin/forms/tags" },
     ],
   },
   {
     title: "Gestión",
     items: [
-      { label: "Usuarios", to: "/admin/users" },
-      { label: "Restaurantes", to: "/admin/restaurants" },
-      { label: "Pedidos", to: "/admin/orders" },
+      { label: "Usuarios", to: "/superadmin/users" },
+      { label: "Restaurantes", to: "/superadmin/restaurants" },
+      { label: "Pedidos", to: "/superadmin/orders" },
     ],
   },
 ];

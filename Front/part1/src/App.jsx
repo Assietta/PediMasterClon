@@ -15,6 +15,13 @@ import FoodForm from "./Pages/Admin/FoodForm";
 import AdminOrders from "./Pages/Admin/AdminOrders";
 import AdminRestaurants from "./Pages/Admin/AdminRestaurants";
 import AdminCreateRestaurants from "./Pages/SuperAdmin/AdminCreateRestaurants";
+import SuperAdminFormUsers from "./Pages/SuperAdmin/SuperAdminFormUsers";
+import SuperAdminFormRestaurants from "./Pages/SuperAdmin/SuperAdminFormRestaurants";
+import SuperAdminFormMenus from "./Pages/SuperAdmin/SuperAdminFormMenus";
+import SuperAdminFormTags from "./Pages/SuperAdmin/SuperAdminFormTags";
+import SuperAdminManageUsers from "./Pages/SuperAdmin/SuperAdminManageUsers";
+import SuperAdminManageRestaurants from "./Pages/SuperAdmin/SuperAdminManageRestaurants";
+import SuperAdminManageOrders from "./Pages/SuperAdmin/SuperAdminManageOrders";
 import Unauthorized from "./Pages/Unauthorized";
 import Contact from "./Pages/Contact";
 import AppPage from "./Pages/AppPage";
@@ -91,6 +98,62 @@ function App() {
           element={
             <SuperAdminLayout>
               <AdminCreateRestaurants />
+            </SuperAdminLayout>
+          }
+        />
+        <Route
+          path="/superadmin/forms/users"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminFormUsers />
+            </SuperAdminLayout>
+          }
+        />
+        <Route
+          path="/superadmin/forms/restaurants"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminFormRestaurants />
+            </SuperAdminLayout>
+          }
+        />
+        <Route
+          path="/superadmin/forms/menus"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminFormMenus />
+            </SuperAdminLayout>
+          }
+        />
+        <Route
+          path="/superadmin/forms/tags"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminFormTags />
+            </SuperAdminLayout>
+          }
+        />
+        <Route
+          path="/superadmin/users"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminManageUsers />
+            </SuperAdminLayout>
+          }
+        />
+        <Route
+          path="/superadmin/restaurants"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminManageRestaurants />
+            </SuperAdminLayout>
+          }
+        />
+        <Route
+          path="/superadmin/orders"
+          element={
+            <SuperAdminLayout>
+              <SuperAdminManageOrders />
             </SuperAdminLayout>
           }
         />

@@ -1,19 +1,28 @@
 // src/App.jsx
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./router/ProtectedRoute";
+
 import ClientLayout from "./layouts/ClientLayout";
 import AdminLayout from "./layouts/AdminLayout";
-import SuperAdminLayout from "./layouts/SuperAdminLayout";
 
-// Páginas
+// Páginas públicas
 import HomePage from "./Pages/HomePage";
 import Login from "./Pages/Login";
+import Contact from "./Pages/Contact";
+import AppPage from "./Pages/AppPage";
+import Unauthorized from "./Pages/Unauthorized";
+
+// Cliente
 import HomeClient from "./Pages/client/HomeClient";
 import CartPage from "./Pages/client/CartPage";
+
+// Admin
 import AdminFoods from "./Pages/Admin/AdminFoods";
 import FoodForm from "./Pages/Admin/FoodForm";
 import AdminOrders from "./Pages/Admin/AdminOrders";
 import AdminRestaurants from "./Pages/Admin/AdminRestaurants";
+
+// SuperAdmin
 import AdminCreateRestaurants from "./Pages/SuperAdmin/AdminCreateRestaurants";
 import SuperAdminFormUsers from "./Pages/SuperAdmin/SuperAdminFormUsers";
 import SuperAdminFormRestaurants from "./Pages/SuperAdmin/SuperAdminFormRestaurants";
@@ -22,9 +31,7 @@ import SuperAdminFormTags from "./Pages/SuperAdmin/SuperAdminFormTags";
 import SuperAdminManageUsers from "./Pages/SuperAdmin/SuperAdminManageUsers";
 import SuperAdminManageRestaurants from "./Pages/SuperAdmin/SuperAdminManageRestaurants";
 import SuperAdminManageOrders from "./Pages/SuperAdmin/SuperAdminManageOrders";
-import Unauthorized from "./Pages/Unauthorized";
-import Contact from "./Pages/Contact";
-import AppPage from "./Pages/AppPage";
+
 function App() {
   return (
     <Routes>
@@ -35,7 +42,7 @@ function App() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
 
-      {/* Cliente logueado (cualquier rol válido) */}
+      {/* Cliente logueado (cualquier rol logueado que tu ProtectedRoute acepte) */}
       <Route element={<ProtectedRoute allowedRoles={[]} />}>
         <Route
           path="/home"
@@ -55,7 +62,7 @@ function App() {
         />
       </Route>
 
-      {/* Admin + SuperAdmin */}
+      {/* Admin + SuperAdmin (mismo layout, cambia el menú por rol) */}
       <Route element={<ProtectedRoute allowedRoles={["Admin", "SuperAdmin"]} />}>
         <Route
           path="/admin/foods"
@@ -91,70 +98,70 @@ function App() {
         />
       </Route>
 
-      {/* Solo SuperAdmin */}
+      {/* Solo SuperAdmin (pero reutilizando el mismo AdminLayout) */}
       <Route element={<ProtectedRoute allowedRoles={["SuperAdmin"]} />}>
         <Route
           path="/superadmin/restaurants/new"
           element={
-            <SuperAdminLayout>
+            <AdminLayout>
               <AdminCreateRestaurants />
-            </SuperAdminLayout>
+            </AdminLayout>
           }
         />
         <Route
           path="/superadmin/forms/users"
           element={
-            <SuperAdminLayout>
+            <AdminLayout>
               <SuperAdminFormUsers />
-            </SuperAdminLayout>
+            </AdminLayout>
           }
         />
         <Route
           path="/superadmin/forms/restaurants"
           element={
-            <SuperAdminLayout>
+            <AdminLayout>
               <SuperAdminFormRestaurants />
-            </SuperAdminLayout>
+            </AdminLayout>
           }
         />
         <Route
           path="/superadmin/forms/menus"
           element={
-            <SuperAdminLayout>
+            <AdminLayout>
               <SuperAdminFormMenus />
-            </SuperAdminLayout>
+            </AdminLayout>
           }
         />
         <Route
           path="/superadmin/forms/tags"
           element={
-            <SuperAdminLayout>
+            <AdminLayout>
               <SuperAdminFormTags />
-            </SuperAdminLayout>
+            </AdminLayout>
           }
         />
         <Route
           path="/superadmin/users"
           element={
-            <SuperAdminLayout>
+            <AdminLayout>
               <SuperAdminManageUsers />
-            </SuperAdminLayout>
+            </AdminLayout>
           }
         />
         <Route
           path="/superadmin/restaurants"
           element={
-            <SuperAdminLayout>
+            <AdminLayout>
               <SuperAdminManageRestaurants />
-            </SuperAdminLayout>
+            </AdminLayout>
           }
         />
         <Route
           path="/superadmin/orders"
           element={
-            <SuperAdminLayout>
+            <AdminLayout>
               <SuperAdminManageOrders />
-            </SuperAdminLayout>
+            </AdminLayout>
           }
         />
       </Route>

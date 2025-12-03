@@ -1,107 +1,98 @@
+// src/pages/superadmin/SuperAdminFormUsers.jsx
 import { useState } from "react";
-import styles from "./SuperAdminPanels.module.css";
+import styles from "./SuperAdminFormUsers.module.css";
+import { Sidebar } from "lucide-react";
 
 export default function SuperAdminFormUsers() {
-  const [role, setRole] = useState("Client");
-  const [forceReset, setForceReset] = useState(true);
-  const [status, setStatus] = useState("");
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    role: "Admin",
+    active: true,
+  });
 
-  function handleSubmit(e) {
+  const onChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm((f) => ({
+      ...f,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const onSubmit = (e) => {
     e.preventDefault();
-    setStatus("Borrador guardado localmente. Podés conectar la API cuando esté lista.");
-  }
+    console.log("Submit usuario:", form);
+    // acá después pegás tu POST al back
+  };
 
   return (
-    <section className={styles.page}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>Form Usuarios</h1>
-        <p className={styles.subtitle}>
-          Diseñá la estructura del formulario de alta y edición de usuarios. Esta vista es
-          sólo de SuperAdmin y queda conectada a las rutas del menú lateral.
-        </p>
-      </header>
+    <div className={styles.wrapper}>
+      <div className={styles.header}>
+        <h1>Crear / editar usuario</h1>
+        <p>Configurá los usuarios que tendrán acceso al panel de Pedimaster.</p>
+      </div>
 
-      <div className={styles.grid}>
-        <form onSubmit={handleSubmit} className={styles.card}>
-          <div className={styles.cardHeader}>
-            <span className={styles.cardTitle}>Datos obligatorios</span>
-            <span className={styles.statusBadge}>Borrador</span>
+      <form className={styles.form} onSubmit={onSubmit}>
+        <div className={styles.row}>
+          <div className={styles.field}>
+            <label>Nombre</label>
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={onChange}
+              placeholder="Ej: Juan Pérez"
+              required
+            />
           </div>
 
-          <div className={styles.content}>
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>
-                Nombre y apellido
-                <input className={styles.input} name="name" placeholder="Ej: Martina Pérez" required />
-              </label>
-              <label className={styles.label}>
-                Email
-                <input className={styles.input} name="email" type="email" placeholder="mail@ejemplo.com" required />
-              </label>
-            </div>
-
-            <div className={styles.fieldGroup}>
-              <label className={styles.label}>
-                Rol principal
-                <select
-                  className={styles.select}
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                >
-                  <option value="Client">Cliente</option>
-                  <option value="Admin">Admin</option>
-                  <option value="SuperAdmin">SuperAdmin</option>
-                </select>
-              </label>
-              <label className={styles.label}>
-                Teléfono
-                <input className={styles.input} name="phone" placeholder="11 4444-5555" />
-              </label>
-            </div>
-
-            <div className={styles.checkboxRow}>
-              <input
-                id="force-reset"
-                type="checkbox"
-                checked={forceReset}
-                onChange={(e) => setForceReset(e.target.checked)}
-              />
-              <label htmlFor="force-reset">Forzar cambio de contraseña en el próximo login</label>
-            </div>
-
-            <div className={styles.actions}>
-              <button type="submit" className={styles.primaryBtn}>
-                Guardar estructura
-              </button>
-              <button type="button" className={styles.secondaryBtn} onClick={() => setStatus("")}>
-                Limpiar estado
-              </button>
-            </div>
-
-            {status && <p className={styles.subtitle}>{status}</p>}
-          </div>
-        </form>
-
-        <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <span className={styles.cardTitle}>Políticas de seguridad</span>
-            <span className={styles.statusBadge}>Revisión</span>
-          </div>
-          <div className={styles.content}>
-            <div className={styles.checkboxRow}>
-              <input id="mfa" type="checkbox" defaultChecked />
-              <label htmlFor="mfa">Solicitar 2FA para roles Admin y SuperAdmin</label>
-            </div>
-            <div className={styles.checkboxRow}>
-              <input id="blocklist" type="checkbox" />
-              <label htmlFor="blocklist">Aplicar lista de bloqueo de emails corporativos</label>
-            </div>
-            <p className={styles.subtitle}>
-              Estas reglas se pueden versionar y sincronizar luego con tu backend.
-            </p>
+          <div className={styles.field}>
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={onChange}
+              placeholder="usuario@pedimaster.com"
+              required
+            />
           </div>
         </div>
-      </div>
-    </section>
+
+        <div className={styles.row}>
+          <div className={styles.field}>
+            <label>Rol</label>
+            <select name="role" value={form.role} onChange={onChange}>
+              <option value="SuperAdmin">SuperAdmin</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+
+          <div className={styles.fieldCheckbox}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                name="active"
+                checked={form.active}
+                onChange={onChange}
+              />
+              Usuario activo
+            </label>
+            <span className={styles.checkboxHint}>
+              Si está desmarcado el usuario no podrá iniciar sesión.
+            </span>
+          </div>
+        </div>
+
+        <div className={styles.actions}>
+          <button type="button" className={styles.secondaryBtn}>
+            Cancelar
+          </button>
+          <button type="submit" className={styles.primaryBtn}>
+            Guardar usuario
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }

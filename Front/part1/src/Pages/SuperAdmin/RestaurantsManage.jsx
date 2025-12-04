@@ -11,22 +11,20 @@ function getRestaurantId(r) {
 
 function normalizeDate(item) {
   return (
-    item.createdAt ||
-    item.creationDate ||
-    item.createdOn ||
-    item.createdDate ||
+    item?.createdAt ||
+    item?.creationDate ||
+    item?.createdOn ||
+    item?.createdDate ||
     null
   );
 }
 
+// para cosas que aún necesitan buscar al dueño (impersonar, modal)
 function findOwner(restaurant, users) {
   const ownerId =
+    restaurant.ownerUserId ??
     restaurant.createdForUserId ??
     restaurant.userId ??
-    restaurant.ownerId ??
-    restaurant.ownerUserId ??
-    restaurant.createdFor?.userId ??
-    restaurant.createdFor?.id ??
     null;
 
   if (!ownerId) return null;
@@ -35,7 +33,6 @@ function findOwner(restaurant, users) {
     users.find((u) => (u.userId ?? u.id) === ownerId) || null
   );
 }
-
 
 export default function SuperAdminRestaurants() {
   const [restaurants, setRestaurants] = useState([]);
@@ -109,20 +106,27 @@ export default function SuperAdminRestaurants() {
   };
 
   const handleImpersonateOwner = (restaurant) => {
-    const owner = findOwner(restaurant, users);
-    if (!owner) {
+    const owner =
+      findOwner(restaurant, users) || null;
+    const ownerId =
+      restaurant.ownerUserId ??
+      restaurant.createdForUserId ??
+      restaurant.userId ??
+      (owner ? owner.userId ?? owner.id : null);
+
+    if (!ownerId) {
       alert("Este restaurante no tiene dueño asociado.");
       return;
     }
 
     const payload = {
       mode: "owner",
-      ownerUserId: owner.userId ?? owner.id,
+      ownerUserId: ownerId,
       restaurantId: getRestaurantId(restaurant),
       startedAt: new Date().toISOString(),
     };
 
-    localStorage.setItem(
+   localStorage.setItem(
       "pedimaster_impersonate_owner",
       JSON.stringify(payload)
     );
@@ -133,7 +137,8 @@ export default function SuperAdminRestaurants() {
   };
 
   const openOwnerModal = (restaurant) => {
-    const currentOwner = findOwner(restaurant, users);
+    const currentOwner =
+      findOwner(restaurant, users) || null;
     setOwnerModalRestaurant(restaurant);
     setSelectedOwnerId(
       currentOwner ? currentOwner.userId ?? currentOwner.id : ""
@@ -147,72 +152,60 @@ export default function SuperAdminRestaurants() {
     setOwnerSearch("");
   };
 
-const handleAssignOwner = async () => {
-  if (!ownerModalRestaurant || !selectedOwnerId) {
-    alert("Seleccioná un dueño");
-    return;
-  }
+  const handleAssignOwner = async () => {
+    if (!ownerModalRestaurant || !selectedOwnerId) {
+      alert("Seleccioná un dueño");
+      return;
+    }
 
-  const rid = getRestaurantId(ownerModalRestaurant);
-  const ownerIdNum = Number(selectedOwnerId);
-  const ownerUser =
-    users.find((u) => (u.userId ?? u.id) === ownerIdNum) || null;
+    const rid = getRestaurantId(ownerModalRestaurant);
+    const ownerIdNum = Number(selectedOwnerId);
+    const ownerUser =
+      users.find((u) => (u.userId ?? u.id) === ownerIdNum) || null;
 
-  try {
-    setSavingRestaurantId(rid);
+    try {
+      setSavingRestaurantId(rid);
 
-    // Lo que mandamos al back
-    const updated = {
-      ...ownerModalRestaurant,
-      userId: ownerIdNum,           // lo que pide la validación
-      createdForUserId: ownerIdNum, // por si el servicio mapea esto
-    };
+      const updated = {
+        ...ownerModalRestaurant,
+        userId: ownerIdNum,
+        createdForUserId: ownerIdNum,
+      };
 
-    await restaurantApi.update(rid, updated);
+      await restaurantApi.update(rid, updated);
 
-    // Actualizamos el estado del front para que muestre el dueño
-    setRestaurants((prev) =>
-      prev.map((r) =>
-        getRestaurantId(r) === rid
-          ? {
-              ...r,
-              createdForUserId: ownerIdNum,
-              // dejamos algo de info en createdFor para mostrar nombre sin recargar
-              createdFor: ownerUser
-                ? {
-                    ...(r.createdFor || {}),
-                    userId: ownerIdNum,
-                    id: ownerIdNum,
-                    fullName:
-                      ownerUser.fullName ||
-                      ownerUser.name ||
-                      `${ownerUser.firstName ?? ""} ${
-                        ownerUser.lastName ?? ""
-                      }`.trim(),
-                    email: ownerUser.email,
-                  }
-                : r.createdFor,
-            }
-          : r
-      )
-    );
+      setRestaurants((prev) =>
+        prev.map((r) =>
+          getRestaurantId(r) === rid
+            ? {
+                ...r,
+                ownerUserId: ownerIdNum,
+                ownerName:
+                  ownerUser?.fullName ||
+                  ownerUser?.name ||
+                  `${ownerUser?.firstName ?? ""} ${
+                    ownerUser?.lastName ?? ""
+                  }`.trim() ||
+                  ownerUser?.email,
+                ownerEmail: ownerUser?.email,
+              }
+            : r
+        )
+      );
 
-    closeOwnerModal();
-  } catch (e) {
-    console.error("Error asignando dueño", e);
-    const backendMsg =
-      e?.data?.title ||
-      e?.data?.message ||
-      (e?.data && JSON.stringify(e.data)) ||
-      e.message;
-    alert("No se pudo asignar el dueño.\n\n" + backendMsg);
-  } finally {
-    setSavingRestaurantId(null);
-  }
-};
-
-
-
+      closeOwnerModal();
+    } catch (e) {
+      console.error("Error asignando dueño", e);
+      const backendMsg =
+        e?.data?.title ||
+        e?.data?.message ||
+        (e?.data && JSON.stringify(e.data)) ||
+        e.message;
+      alert("No se pudo asignar el dueño.\n\n" + backendMsg);
+    } finally {
+      setSavingRestaurantId(null);
+    }
+  };
 
   if (loading) {
     return (
@@ -243,7 +236,6 @@ const handleAssignOwner = async () => {
     const email = (u.email || "").toLowerCase();
     const term = ownerSearch.trim().toLowerCase();
 
-    // podés filtrar roles: acá dejo Admin y Client como candidatos
     const isAllowedRole =
       role.includes("admin") || role.includes("client");
 
@@ -289,7 +281,6 @@ const handleAssignOwner = async () => {
           <tbody>
             {restaurants.map((r) => {
               const rid = getRestaurantId(r);
-              const owner = findOwner(r, users);
               const active =
                 r.isActive ??
                 r.active ??
@@ -300,13 +291,9 @@ const handleAssignOwner = async () => {
                 ? new Date(createdAt).toLocaleDateString()
                 : "-";
 
-              const ownerName = owner
-                ? owner.fullName ||
-                  owner.name ||
-                  `${owner.firstName ?? ""} ${
-                    owner.lastName ?? ""
-                  }`.trim()
-                : "Sin dueño";
+              // 👇 AHORA VIENE DEL BACK
+              const ownerName =
+                r.ownerName || r.ownerEmail || "Sin dueño";
 
               return (
                 <tr key={rid}>

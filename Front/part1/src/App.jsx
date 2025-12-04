@@ -29,8 +29,10 @@ import SuperAdminFormRestaurants from "./Pages/SuperAdmin/SuperAdminFormRestaura
 import SuperAdminFormMenus from "./Pages/SuperAdmin/SuperAdminFormMenus";
 import SuperAdminFormTags from "./Pages/SuperAdmin/SuperAdminFormTags";
 import SuperAdminManageUsers from "./Pages/SuperAdmin/SuperAdminManageUsers";
-import SuperAdminManageRestaurants from "./Pages/SuperAdmin/SuperAdminManageRestaurants";
 import SuperAdminManageOrders from "./Pages/SuperAdmin/SuperAdminManageOrders";
+import SuperAdminDashboard from "./Pages/SuperAdmin/SuperAdminDashboard";
+import UsersManage from "./Pages/SuperAdmin/UsersManage"
+import RestaurantsManage from "./Pages/SuperAdmin/RestaurantsManage"
 
 function App() {
   return (
@@ -75,6 +77,10 @@ function App() {
       {/* Solo SuperAdmin → mismo layout, pero otras páginas */}
       <Route element={<ProtectedRoute allowedRoles={["SuperAdmin"]} />}>
         <Route element={<SuperAdminLayout />}>
+         <Route
+            path="/superadmin/dashboard"
+            element={<SuperAdminDashboard/>}
+          />
           <Route
             path="/superadmin/restaurants/new"
             element={<AdminCreateRestaurants />}
@@ -95,10 +101,12 @@ function App() {
             path="/superadmin/forms/tags"
             element={<SuperAdminFormTags />}
           />
-          <Route path="/superadmin/users" element={<SuperAdminManageUsers />} />
+          <Route 
+            path="/superadmin/users" 
+            element={<UsersManage />} />
           <Route
             path="/superadmin/restaurants"
-            element={<SuperAdminManageRestaurants />}
+            element={<RestaurantsManage/>}
           />
           <Route
             path="/superadmin/orders"

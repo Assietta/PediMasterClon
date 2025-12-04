@@ -2,7 +2,7 @@
 import { apiFetch } from "./apiClient";
 
 export const restaurantApi = {
-  getAll: () =>
+  getAllRestaurants: () =>
     apiFetch("/api/v1/restaurants", {
       method: "GET",
     }),
@@ -16,6 +16,12 @@ export const restaurantApi = {
   create: (payload, token) =>
     apiFetch("/api/v1/restaurants", {
       method: "POST",
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      body: JSON.stringify(payload),
+    }),
+  update: (id, payload, token) =>
+    apiFetch(`/api/v1/restaurants/${id}`, {
+      method: "PUT",
       headers: token ? { Authorization: `Bearer ${token}` } : {},
       body: JSON.stringify(payload),
     }),

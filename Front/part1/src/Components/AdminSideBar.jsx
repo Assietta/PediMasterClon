@@ -17,6 +17,7 @@ const superAdminMenu = [
   {
     title: "Gestión",
     items: [
+      { label: "Dashboard", to: "/superadmin/dashboard" },
       { label: "Usuarios", to: "/superadmin/users" },
       { label: "Restaurantes", to: "/superadmin/restaurants" },
       { label: "Pedidos", to: "/superadmin/orders" },

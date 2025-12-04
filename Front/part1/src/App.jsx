@@ -28,7 +28,6 @@ import SuperAdminFormUsers from "./Pages/SuperAdmin/SuperAdminFormUsers";
 import SuperAdminFormRestaurants from "./Pages/SuperAdmin/SuperAdminFormRestaurants";
 import SuperAdminFormMenus from "./Pages/SuperAdmin/SuperAdminFormMenus";
 import SuperAdminFormTags from "./Pages/SuperAdmin/SuperAdminFormTags";
-import SuperAdminManageUsers from "./Pages/SuperAdmin/SuperAdminManageUsers";
 import SuperAdminManageOrders from "./Pages/SuperAdmin/SuperAdminManageOrders";
 import SuperAdminDashboard from "./Pages/SuperAdmin/SuperAdminDashboard";
 import UsersManage from "./Pages/SuperAdmin/UsersManage"

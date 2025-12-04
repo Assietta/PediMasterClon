@@ -168,3 +168,88 @@
     justify-content: space-between;
   }
 }
+.btnAssign {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  border: none;
+  background: #fee2e2;
+  cursor: pointer;
+  color: #b91c1c;
+}
+
+.btnAssign:hover {
+  background: #fecaca;
+}
+
+/* Modal reutilizado */
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 0.9rem;
+  padding: 1.5rem 1.75rem;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.35);
+}
+
+.modalTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.ownerList {
+  margin-top: 0.5rem;
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.6rem;
+  padding: 0.4rem;
+}
+
+.ownerItem {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.ownerItem:hover {
+  background: #f9fafb;
+}
+
+.ownerName {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.ownerEmail,
+.ownerRole {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.ownerEmpty {
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}

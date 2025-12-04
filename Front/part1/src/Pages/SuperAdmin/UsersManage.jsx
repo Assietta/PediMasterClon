@@ -1,6 +1,6 @@
 // src/pages/SuperAdminUsers.jsx
 import { useEffect, useState } from "react";
-import styles from "./SuperAdminUsers.module.css";
+import styles from "./UsersManage.module.css";
 import { userApi } from "../../api/userApi";
 import { restaurantApi } from "../../api/restaurantApi";
 

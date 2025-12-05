@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import styles from "./SuperAdminPanels.module.css";
+import styles from "./SuperAdminFormUsers.module.css";
 
 const DEFAULT_TAGS = [
   "vegano",

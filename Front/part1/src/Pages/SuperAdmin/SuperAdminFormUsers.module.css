@@ -1,120 +1,145 @@
-.wrapper {
-  max-width: 900px;
-  margin: 0 auto;
+/* src/pages/superadmin/SuperAdminFormUsers.module.css */
+
+.container {
+  max-width: 520px;
+  margin: 2.5rem auto;
+  padding: 2rem 2.4rem;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 107, 26, 0.12);
 }
 
-.header {
-  margin-bottom: 24px;
+.title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin-bottom: 1.8rem;
+  color: #ff6b1a;
+  letter-spacing: 0.02em;
 }
 
-.header h1 {
-  font-size: 24px;
-  margin: 0 0 6px;
-}
-
-.header p {
-  margin: 0;
-  font-size: 14px;
-  color: #666;
-}
+/* FORM */
 
 .form {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 20px 24px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 1.1rem;
 }
 
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.field {
-  flex: 1;
-  min-width: 220px;
+.form label {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-}
-
-.field label {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.field input,
-.field select {
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  padding: 10px 12px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.field input:focus,
-.field select:focus {
-  border-color: #ff7a00;
-  box-shadow: 0 0 0 1px rgba(255, 122, 0, 0.25);
-}
-
-.fieldCheckbox {
-  flex: 1;
-  min-width: 220px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 4px;
-}
-
-.checkboxLabel {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-}
-
-.checkboxHint {
-  font-size: 12px;
-  color: #777;
-}
-
-.actions {
-  margin-top: 12px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.primaryBtn,
-.secondaryBtn {
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-size: 14px;
-  border: none;
-  cursor: pointer;
+  gap: 0.4rem;
+  font-size: 0.9rem;
   font-weight: 600;
+  color: #333333;
 }
 
-.primaryBtn {
-  background: #ff7a00;
-  color: #fff;
+.form input,
+.form select {
+  border-radius: 999px;
+  border: 1px solid #e4e4e4;
+  padding: 0.65rem 0.95rem;
+  font-size: 0.95rem;
+  outline: none;
+  background: #fafafa;
+  transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease,
+    transform 0.08s ease;
 }
 
-.primaryBtn:hover {
-  background: #e96d00;
+.form input:focus,
+.form select:focus {
+  border-color: #ff6b1a;
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(255, 107, 26, 0.15);
+  transform: translateY(-1px);
 }
 
-.secondaryBtn {
-  background: #f2f2f2;
-  color: #333;
+/* Mensajes de estado */
+
+.error,
+.success {
+  border-radius: 999px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.6rem;
 }
 
-.secondaryBtn:hover {
-  background: #e4e4e4;
+.error {
+  background: #ffe5e5;
+  color: #a10000;
+  border: 1px solid #ffc2c2;
+}
+
+.success {
+  background: #e7fff2;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+/* Botón */
+
+.saveBtn {
+  margin-top: 0.6rem;
+  width: 100%;
+  border-radius: 999px;
+  padding: 0.8rem 1rem;
+  border: none;
+  outline: none;
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff8a3c, #ff6b1a);
+  color: #ffffff;
+  box-shadow: 0 14px 28px rgba(255, 107, 26, 0.45);
+  transition: transform 0.1s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.saveBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 36px rgba(255, 107, 26, 0.55);
+}
+
+.saveBtn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 10px 20px rgba(255, 107, 26, 0.45);
+}
+
+.saveBtn:disabled {
+  opacity: 0.6;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* Responsive */
+
+@media (max-width: 600px) {
+  .container {
+    margin: 1.5rem 1rem;
+    padding: 1.5rem 1.4rem;
+    border-radius: 16px;
+  }
+
+  .title {
+    font-size: 1.4rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .form label {
+    font-size: 0.85rem;
+  }
+
+  .form input,
+  .form select {
+    font-size: 0.9rem;
+    padding: 0.55rem 0.85rem;
+  }
+
+  .saveBtn {
+    font-size: 0.9rem;
+    padding: 0.7rem 0.9rem;
+  }
 }

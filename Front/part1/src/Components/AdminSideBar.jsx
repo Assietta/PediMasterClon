@@ -10,7 +10,6 @@ const superAdminMenu = [
     items: [
       { label: "Form Usuarios", to: "/superadmin/forms/users" },
       { label: "Form Restaurantes", to: "/superadmin/forms/restaurants" },
-      { label: "Form Menús", to: "/superadmin/forms/menus" },
       { label: "Form Tags", to: "/superadmin/forms/tags" },
     ],
   },

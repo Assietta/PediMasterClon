@@ -1,97 +1,104 @@
-// src/pages/superadmin/SuperAdminFormUsers.jsx
+// src/pages/superadmin/SuperAdminCreateUser.jsx
 import { useState } from "react";
 import styles from "./SuperAdminFormUsers.module.css";
-import { Sidebar } from "lucide-react";
+import { userApi } from "../../api/userApi";
 
-export default function SuperAdminFormUsers() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    role: "Admin",
-    active: true,
-  });
+const initialForm = {
+  userName: "",
+  email: "",
+  password: "",
+  role: "1", // Admin por defecto
+};
+
+export default function SuperAdminCreateUser() {
+  const [form, setForm] = useState(initialForm);
+  const [saving, setSaving] = useState(false);
+  const [err, setErr] = useState("");
+  const [ok, setOk] = useState("");
 
   const onChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm((f) => ({
-      ...f,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submit usuario:", form);
-    // acá después pegás tu POST al back
+    setSaving(true);
+    setErr("");
+    setOk("");
+
+    try {
+      const payload = {
+        userName: form.userName, // ✔️ ahora se usa este
+        email: form.email,
+        password: form.password,
+        role: Number(form.role),
+      };
+
+      await userApi.create(payload);
+      setOk("Usuario creado con éxito.");
+      setForm(initialForm);
+    } catch (error) {
+      console.error(error);
+      setErr(error?.message || "Error al crear usuario");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.header}>
-        <h1>Crear / editar usuario</h1>
-        <p>Configurá los usuarios que tendrán acceso al panel de Pedimaster.</p>
-      </div>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Crear usuario</h1>
 
-      <form className={styles.form} onSubmit={onSubmit}>
-        <div className={styles.row}>
-          <div className={styles.field}>
-            <label>Nombre</label>
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={onChange}
-              placeholder="Ej: Juan Pérez"
-              required
-            />
-          </div>
+      {err && <div className={styles.error}>{err}</div>}
+      {ok && <div className={styles.success}>{ok}</div>}
 
-          <div className={styles.field}>
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={onChange}
-              placeholder="usuario@pedimaster.com"
-              required
-            />
-          </div>
-        </div>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <label>
+          Nombre de usuario
+          <input
+            type="text"
+            name="userName"
+            value={form.userName}
+            onChange={onChange}
+            required
+          />
+        </label>
 
-        <div className={styles.row}>
-          <div className={styles.field}>
-            <label>Rol</label>
-            <select name="role" value={form.role} onChange={onChange}>
-              <option value="SuperAdmin">SuperAdmin</option>
-              <option value="Admin">Admin</option>
-            </select>
-          </div>
+        <label>
+          Email
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={onChange}
+            required
+          />
+        </label>
 
-          <div className={styles.fieldCheckbox}>
-            <label className={styles.checkboxLabel}>
-              <input
-                type="checkbox"
-                name="active"
-                checked={form.active}
-                onChange={onChange}
-              />
-              Usuario activo
-            </label>
-            <span className={styles.checkboxHint}>
-              Si está desmarcado el usuario no podrá iniciar sesión.
-            </span>
-          </div>
-        </div>
+        <label>
+          Contraseña
+          <input
+            type="password"
+            name="password"
+            value={form.password}
+            onChange={onChange}
+            required
+          />
+        </label>
 
-        <div className={styles.actions}>
-          <button type="button" className={styles.secondaryBtn}>
-            Cancelar
-          </button>
-          <button type="submit" className={styles.primaryBtn}>
-            Guardar usuario
-          </button>
-        </div>
+        <label>
+          Rol
+          <select name="role" value={form.role} onChange={onChange}>
+            <option value="0">SuperAdmin</option>
+            <option value="1">Admin</option>
+            <option value="2">User</option>
+          </select>
+        </label>
+
+        <button disabled={saving} className={styles.saveBtn}>
+          {saving ? "Guardando..." : "Crear usuario"}
+        </button>
       </form>
     </div>
   );

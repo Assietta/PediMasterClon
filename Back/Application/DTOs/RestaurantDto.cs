@@ -62,7 +62,7 @@
      int? MinOrder,
      string Slug,
 
-     // 🔥 NUEVO
+    
      int? OwnerUserId,
      string? OwnerName,
      string? OwnerEmail

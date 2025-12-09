@@ -61,8 +61,6 @@
      decimal DeliveryCost,
      int? MinOrder,
      string Slug,
-
-    
      int? OwnerUserId,
      string? OwnerName,
      string? OwnerEmail
